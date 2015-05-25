@@ -18,7 +18,8 @@ EMUCH_URL = r'http://' + EMUCH_DOMAIN
 
 EMUCH_CREDIT_ACTION = EMUCH_URL + r'/bbs/memcp.php?action=getcredit'
 EMUCH_CREDIT_TOKEN = u'creditsubmit=领取红包'.encode('utf8')
-EMUCH_CREDIT_RSPD = u'((您现在的金币数:).*?>(\d+\.\d)<|今天的红包，您已经领取了)'.encode('gb18030')
+EMUCH_CREDIT_RSPD = u'(已经连续 \d+ 天坚持领取红包了|今天的红包，您已经领取了)'.encode('gb18030')
+EMUCH_CREDITS = U'>金币: \d+(|\.|\.\d+)<'.encode('gb18030')
 
 if __name__ == '__main__':
     cj = http.cookiejar.CookieJar()
@@ -41,21 +42,18 @@ if __name__ == '__main__':
 
 # Take the daily credits in emuch.net
     data = opener.open(EMUCH_CREDIT_ACTION, data=EMUCH_CREDIT_TOKEN).read()
+#   print(data.decode('gb18030'))
 
 # for check continuous days to take credits for testing purpose
     # data = opener.open(EMUCH_CREDIT_ACTION).read()
 
 # Check the response data if got the daily credits. 
     match = re.search(EMUCH_CREDIT_RSPD, data)
-    # print(match.group(0, 1, 2, 3))
     if match:
-        if match.group(2) and match.group(3):
-            rspd = match.group(2) + match.group(3)
-            print(datetime.now().strftime("%Y-%m-%d %I:%M:%S%p"), rspd.decode('gb18030'))
-        else:
-            rspd = match.group()
-            print(datetime.now().strftime("%Y-%m-%d %I:%M:%S%p"), rspd.decode('gb18030')) 
+        rspd = re.search(EMUCH_CREDITS, data)
+        print(datetime.now().strftime("%Y-%m-%d %I:%M:%S%p"), '%s。您总共有-%s-' 
+            %((match.group()).decode('gb18030'), (rspd.group()).decode('gb18030')))
     else:
         print(datetime.now().strftime("%Y-%m-%d %I:%M:%S%p"), 
-              'Oops! There\'s something wrong with taking Emuch Coins.')
+            'Oops! There\'s something wrong with taking Emuch Coins.')
 
