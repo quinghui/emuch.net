@@ -42,10 +42,6 @@ if __name__ == '__main__':
 
 # Take the daily credits in emuch.net
     data = opener.open(EMUCH_CREDIT_ACTION, data=EMUCH_CREDIT_TOKEN).read()
-#   print(data.decode('gb18030'))
-
-# for check continuous days to take credits for testing purpose
-    # data = opener.open(EMUCH_CREDIT_ACTION).read()
 
 # Check the response data if got the daily credits. 
     match = re.search(EMUCH_CREDIT_RSPD, data)
