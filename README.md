@@ -9,8 +9,8 @@ You may need to properly hard code your emuch.net cookies **'_discuz_uid'** and 
 
 The detials in the script are following:
 
-    **EMUCH_UID_VALUE = ' '**  # here, hard code **'_discuz_uid'** value   
-    **EMUCH_PW_VALUE = ' '**   # here, hard code **'_discuz_pw'** value 
+    EMUCH_UID_VALUE = ' '  # here, hard code '_discuz_uid' value   
+    EMUCH_PW_VALUE = ' '   # here, hard code '_discuz_pw' value 
 
 ### For the script *emuch_coins.py* ###
 
@@ -26,4 +26,4 @@ The cookies file is following:
     }   
 
 
-[emuch]:[http://emuch.net/bbs/]
+[emuch]:http://emuch.net/bbs/
