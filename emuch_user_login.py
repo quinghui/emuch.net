@@ -46,7 +46,8 @@ if __name__ == '__main__':
        t = (rspd.group(1)).decode('gb18030')
        formhash = (rspd.group(2)).decode('gb18030')
     else:
-      exit('Oops! Get nothing for the \'t\' and \'formhash\'.') 
+       print('Oops! Get nothing for the \'t\' and \'formhash\'.') 
+       sys.exit()
 
 # first sign in with username and password, and get verification code if ok
     login_url = '{}&t={}'.format(LOGIN_URL, t)
@@ -62,7 +63,8 @@ if __name__ == '__main__':
                         )
        post_sec_hash = (rspd.group(4)).decode('gb18030')
     else:
-      exit('Oops! Get nothing for verification and \'post_sec_code\'.') 
+       print ('Oops! Get nothing for verification and \'post_sec_code\'.')
+       sys.exit()
 
 # second submit verification code to complete sign processing
     post_data ='post_sec_code={}&post_sec_hash={}&username={}&loginsubmit=提交'\
