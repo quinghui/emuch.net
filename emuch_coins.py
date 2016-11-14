@@ -4,15 +4,17 @@
 import sys, os, re
 import http.cookiejar, urllib.request
 import json
+
 from datetime import datetime
 
 EMUCH_COOKIE_FILE = 'emuch_cookies.json'
-EMUCH_DOMAIN = r'emuch.net'
+#EMUCH_DOMAIN = r'emuch.net'
+EMUCH_DOMAIN = r'muchong.com'
 EMUCH_URL = r'http://' + EMUCH_DOMAIN
 EMUCH_CREDIT_ACTION = EMUCH_URL + r'/bbs/memcp.php?action=getcredit'
 EMUCH_CREDIT_TOKEN = u'creditsubmit=领取红包'.encode('utf8')
 EMUCH_CREDIT_RSPD = u'(已经连续 \d+ 天坚持领取红包了|今天的红包，您已经领取了)'.encode('gb18030')
-EMUCH_CREDITS = U'>金币: \d+(|\.|\.\d+)<'.encode('gb18030')
+EMUCH_CREDITS = U'您现在的金币数: .+>(\d+.\d+)<'.encode('gb18030')
 
 # Get the current script file's absolute path where the EMUCH_COOKIE_FILE is located in. 
 def get_file_path():
@@ -49,10 +51,12 @@ if __name__ == '__main__':
     match = re.search(EMUCH_CREDIT_RSPD, data)
     if match:
         rspd = re.search(EMUCH_CREDITS, data)
-        print(datetime.now().strftime("%Y-%m-%d %I:%M:%S%p"), '%s。您总共有-%s-' 
-            %((match.group()).decode('gb18030'), (rspd.group()).decode('gb18030')))
+        if rspd:
+           print(datetime.now().strftime("%Y-%m-%d %I:%M:%S%p"), '%s。您总共有-%s-' 
+              %((match.group()).decode('gb18030'), (rspd.group(1)).decode('gb18030')))
+        else:
+           print(datetime.now().strftime("%Y-%m-%d %I:%M:%S%p"), '%s.' %(match.group()).decode('gb18030'))
     else:
         print(datetime.now().strftime("%Y-%m-%d %I:%M:%S%p"), 
               'Oops! There\'s something wrong with taking Emuch Coins.')
-    
-
+ 
